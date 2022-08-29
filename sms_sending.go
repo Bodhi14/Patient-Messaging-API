@@ -8,17 +8,17 @@ import (
 	"net/url"
 )
 
-func sendSMS(apikey string, numbers string, sender string, message string) {
+func sendSMS(apikey string, numbers string, sender string, message string) string {
 	resp, err := http.Get("https://api.textlocal.in/send/?")
 	if err != nil {
 		log.Fatalln(err)
-		return
+		return ""
 	}
 	fmt.Println(resp)
 	url := "apikey" + "numbers" + "string" + "message"
 	data := EncodeParams(url)
 	data = EncodeString(data)
-
+	return data
 }
 
 func EncodeParams(s string) string {
@@ -30,5 +30,8 @@ func EncodeString(s string) string {
 }
 
 func main() {
+	response := sendSMS("2e1", "+91", "+911", "message")
+
+	fmt.Println(response)
 
 }
