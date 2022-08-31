@@ -26,7 +26,6 @@ func main() {
 	router.POST("/req", func(c *gin.Context) {
 		var req Request
 		c.BindJSON(&req)
-
 		Url, err := url.Parse("http://https://api.textlocal.in/send/")
 		if err != nil {
 			panic(err)
@@ -43,6 +42,5 @@ func main() {
 
 		c.JSON(200, req)
 	})
-
 	router.Run()
 }
