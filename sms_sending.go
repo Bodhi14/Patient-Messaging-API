@@ -1,36 +1,48 @@
 package main
 
 import (
-	"encoding/base64"
 	"fmt"
-	"log"
-	"net/http"
 	"net/url"
+
+	"github.com/gin-gonic/gin"
 )
 
-func sendSMS(apikey string, numbers string, sender string, message string) string {
-	resp, err := http.Get("https://api.textlocal.in/send/?")
-	if err != nil {
-		log.Fatalln(err)
-		return ""
-	}
-	fmt.Println(resp)
-	url := "apikey" + "numbers" + "string" + "message"
-	data := EncodeParams(url)
-	data = EncodeString(data)
-	return data
-}
-
-func EncodeParams(s string) string {
-	return url.QueryEscape(s)
-}
-
-func EncodeString(s string) string {
-	return base64.StdEncoding.EncodeToString([]byte(s))
+type Request struct {
+	Apikey  string `json:"apikey"`
+	Numbers string `json:"numbers"`
+	Message string `json:"message"`
+	Sender  string `json:"sender"`
 }
 
 func main() {
-	response := sendSMS("NDk1ODQ4NTg1NDYzNzU0MzQxNzE1NjcwNTc2ZjRkNGQ=", "+919830729594", "+919073423666", "message")
-	fmt.Println(response)
+	const myurl = "http://localhost:9000"
 
+	router := gin.Default()
+
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{"status": "Server is Running"})
+	})
+
+	router.POST("/req", func(c *gin.Context) {
+		var req Request
+		c.BindJSON(&req)
+
+		Url, err := url.Parse("http://https://api.textlocal.in/send/")
+		if err != nil {
+			panic(err)
+		}
+
+		parameters := url.Values{}
+		parameters.Add("apiKey", req.Apikey)
+		parameters.Add("numbers", req.Numbers)
+		parameters.Add("message", req.Message)
+		parameters.Add("sender", req.Sender)
+		Url.RawQuery = parameters.Encode()
+
+		fmt.Printf("Encoded URL is %q\n", Url.String())
+
+		c.JSON(200, req)
+	})
+
+	router.Run()
 }
