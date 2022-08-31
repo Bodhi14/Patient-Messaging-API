@@ -30,8 +30,7 @@ func EncodeString(s string) string {
 }
 
 func main() {
-	response := sendSMS("2e1", "+91", "+911", "message")
-
+	response := sendSMS("NDk1ODQ4NTg1NDYzNzU0MzQxNzE1NjcwNTc2ZjRkNGQ=", "+919830729594", "+919073423666", "message")
 	fmt.Println(response)
 
 }
