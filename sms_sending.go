@@ -15,7 +15,7 @@ type Request struct {
 }
 
 func main() {
-	const myurl = "http://localhost:9000"
+	const myurl = "http://localhost:8001"
 
 	router := gin.Default()
 
