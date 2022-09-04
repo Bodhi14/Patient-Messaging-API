@@ -15,7 +15,7 @@ type Request struct {
 }
 
 func main() {
-	const myurl = "http://localhost:8001"
+	const myurl = "http://localhost:8080"
 
 	router := gin.Default()
 
@@ -23,7 +23,7 @@ func main() {
 		c.JSON(200, gin.H{"status": "Server is Running"})
 	})
 
-	router.POST("/req", func(c *gin.Context) {
+	router.POST("/", func(c *gin.Context) {
 		var req Request
 		c.BindJSON(&req)
 		Url, err := url.Parse("http://https://api.textlocal.in/send/")
@@ -42,5 +42,6 @@ func main() {
 
 		c.JSON(200, req)
 	})
+
 	router.Run()
 }
